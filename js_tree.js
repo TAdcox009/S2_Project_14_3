@@ -38,7 +38,7 @@
 */
 
 // Global variables.
-var nodeCount =0;
+var nodeCount = 0;
 var elemCount = 0;
 var textCount = 0;
 var wsCount = 0;
@@ -48,22 +48,40 @@ window.addEventListener("load", makeTree);
 
 // Creates the node tree for the source article.
 function makeTree() {
-// 7. Within the makeTree() function, create the following aside element fragment
-// <aside id=”treeBox”> <h1>Node Tree</h1>
-// </aside> and append it to the section element with the ID “main”.
-var treeBox = document.createElement("aside");
-treeBox.id = "treeBox";
-treeBox.innerHTML = "<h1>Node Tree</h1>";
+
+      // Creates an aside element and appends it to the section element with the ID of main.
+      var treeBox = document.createElement("aside");
+      treeBox.id = "treeBox";
+      treeBox.innerHTML = "<h1>Node Tree</h1>";
+
+      var sectionElem = document.getElementById("main");
+      sectionElem.appendChild(treeBox);
+
+      // 8. The node tree will be created within an ordered list. Declare a variable named nodeList containing the initial ol element node that will be the foundation of the node tree and append it to the aside element fragment.
+      var nodeList = ["ol"];
+      treeBox.appendChild(nodeList);
+
+      // 9. The node tree will be based on the contents of the elements matching the CSS selector “#main article”. Declare a variable named sourceArticle that points to these elements. (Hint: Use the querySelectorAll() method.)
+      var sourceArticle = document.querySelector("#mainarticle");
+
+      // 10. The contents of the node tree and the count of the different global variables will be updated using a function named makeBranches(), which you will create shortly. Call the makeBranches() function using the sourceArticle and nodeList variables as parameter values.
+      makeBranches(sourceArticle, nodeList);
+}
+
+// 11. Create the makeBranches() function that will be used to append node branches to the node tree diagram. The function will have two parameters named treeNode and nestedList. The treeNode parameter stores the current node from the source article and the nestedList parameter stores the structure of the node tree displayed in the web page. Add the commands described in Steps 12 through 17 to the function.
+function makeBranches(treeNode, nestedList) {
+      // 12. Each time the makeBranches() function is called, it is because a new node has been discovered in the source article. Increase the value of the nodeCount variable by 1.
+      nodeCount++;
+
+//       13. Create the following list item HTML fragment, storing the list item element in the lielem variable and the span element node in the spanelem variable:
+// <li> 
+//       +--<span></span>
+// </li>
 
 
-// 8. The node tree will be created within an ordered list. Declare a variable named nodeList contain- ing the initial ol element node that will be the foundation of the node tree and append it to the aside element fragment.
-
-// 9. The node tree will be based on the contents of the elements matching the CSS selector “#main article”. Declare a variable named sourceArticle that points to these elements. (Hint: Use the querySelectorAll() method.)
-
-// 10. The contents of the node tree and the count of the different global variables will be updated using a function named makeBranches(), which you will create shortly. Call the makeBranches() function using the sourceArticle and nodeList variables as parameter values.
 }
 
 
 function isWhiteSpaceNode(tString) {
-   return !(/[^\t\n\r ]/.test(tString));
+      return !(/[^\t\n\r ]/.test(tString));
 }
