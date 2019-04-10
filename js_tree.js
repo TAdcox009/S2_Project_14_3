@@ -58,7 +58,7 @@ function makeTree() {
       sectionElem.appendChild(treeBox);
 
       // 8. The node tree will be created within an ordered list. Declare a variable named nodeList containing the initial ol element node that will be the foundation of the node tree and append it to the aside element fragment.
-      var nodeList = ["ol"];
+      var nodeList = document.createElement("ol");
       treeBox.appendChild(nodeList);
 
       // 9. The node tree will be based on the contents of the elements matching the CSS selector “#main article”. Declare a variable named sourceArticle that points to these elements. (Hint: Use the querySelectorAll() method.)
@@ -66,6 +66,11 @@ function makeTree() {
 
       // 10. The contents of the node tree and the count of the different global variables will be updated using a function named makeBranches(), which you will create shortly. Call the makeBranches() function using the sourceArticle and nodeList variables as parameter values.
       makeBranches(sourceArticle, nodeList);
+
+      document.getElementById("totalNodes").textContent = nodeCount;
+      document.getElementById("elemNodes").textContent = elemCount;
+      document.getElementById("textNodes").textContent = textCount;
+      document.getElementById("wsNodes").textContent = wsCount;
 }
 
 // 11. Create the makeBranches() function that will be used to append node branches to the node tree diagram. The function will have two parameters named treeNode and nestedList. The treeNode parameter stores the current node from the source article and the nestedList parameter stores the structure of the node tree displayed in the web page. Add the commands described in Steps 12 through 17 to the function.
@@ -77,8 +82,38 @@ function makeBranches(treeNode, nestedList) {
 // <li> 
 //       +--<span></span>
 // </li>
+var liElem = document.createElement("li");
+liElem.innerHTML = "+--";
+var spanElem = document.createElement("span");
+liElem.appendChild(spanElem);
+nestedList.appendChild(liElem);
+
+if (treeNode.nodeType === 1) {
+   elemCount++;
+   spanElem.setAttribute("class", "elementNode");
+   spanElem.textContent = "<" + treeNode.nodeName + ">";
+} else if (treeNode.nodeType === 3) {
+   textCount++;
+   var textString = treeNode.nodeValue;
 
 
+   if (isWhiteSpaceNode(textString)) {
+         wsCount++;
+         spanElem.setAttribute("class", "whiteSpaceNode");
+         spanElem.textContent = "#text";
+   } else {
+         spanElem.setAttribute("class", "textNode")
+         spanElem.textContent = textString;
+   }
+}
+if (treeNode.childNodes.length > 0) {
+   var newList = document.createElement("ol");
+   newList.innerHTML = "|";
+   nestedList.appendChild(newList);
+   for (var n = treeNode.firstChild; n !== null; n = n.nextSibling) {
+         makeBranches(n, newList);
+      }
+   }
 }
 
 
